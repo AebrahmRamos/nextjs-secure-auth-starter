@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { authorize } from './src/lib/auth-middleware';
+import { canAccessRoute } from './src/lib/rbac.js';
+import { ROUTE_CONFIG } from './src/config/route-config.js';
+import { ROLES } from './src/config/roles.js';
 
 export async function middleware(request) {
   try {
@@ -28,25 +31,24 @@ export async function middleware(request) {
       return NextResponse.redirect(loginUrl);
     }
 
-    // Role-based access
-    const role = user?.role || 'user';
-    const isAdmin = role === 'admin';
-    const isModerator = role === 'moderator';
+    // Use the new RBAC system for route-based access control
+    if (!canAccessRoute(user, pathname, ROUTE_CONFIG)) {
+      console.log(`[Middleware] Access denied: user=${user?.username} role=${user?.role} path=${pathname}`);
 
-    const restrictedRoutes = {
-      '/admin': isAdmin,
-      '/moderation': isAdmin || isModerator,
-      '/dashboard': isAdmin,
-    };
-
-    for (const [route, allowed] of Object.entries(restrictedRoutes)) {
-      if (pathname.startsWith(route) && !allowed) {
+      if (pathname.startsWith('/api/')) {
         return new Response(
-          JSON.stringify({ error: 'Forbidden', message: `Access to ${route} requires elevated role` }),
+          JSON.stringify({
+            error: 'Forbidden',
+            message: `Access to ${pathname} requires elevated permissions`
+          }),
           { status: 403, headers: { 'Content-Type': 'application/json' } }
         );
       }
+
+      // Redirect unauthorized users to forums (safe fallback)
+      return NextResponse.redirect(new URL('/forums', request.url));
     }
+
 
     // Attach headers
     const response = NextResponse.next();
@@ -72,9 +74,10 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
+    '/admin',
     '/admin/:path*',
-    '/moderation/:path*',
-    '/dashboard/:path*',
+    '/moderator',
+    '/moderator/:path*',
     '/api/:path*',
   ],
 };

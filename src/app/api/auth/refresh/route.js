@@ -30,11 +30,19 @@ export async function POST() {
     // Optional: rotate refresh token
     await RefreshToken.deleteOne({ token: refreshToken });
 
-    const newRefreshToken = jwt.sign({ id: user._id, role: user.role }, process.env.REFRESH_SECRET, {
-      expiresIn: "7d",
-    });
+    const newRefreshToken = jwt.sign(
+      { id: user._id, role: user.role, jti: Date.now() + Math.random() },
+      process.env.REFRESH_SECRET,
+      { expiresIn: "7d" }
+    );
 
-    await RefreshToken.create({ user: user._id, token: newRefreshToken });
+    await RefreshToken.create({
+      user: user._id,
+      token: newRefreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      ip: "refresh",
+      userAgent: "refresh"
+    });
 
     // Issue new access token
     const newAccessToken = jwt.sign(

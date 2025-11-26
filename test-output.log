@@ -1,0 +1,221 @@
+
+> case-study@0.1.0 test:e2e
+> npm run test:e2e:setup && playwright test
+
+
+> case-study@0.1.0 test:e2e:setup
+> node scripts/seed-test-users.js
+
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
+Connected to database
+User test_moderator already exists
+Updated user test_moderator
+User test_user already exists
+Updated user test_user
+Test users seeded successfully
+Disconnected from database
+[1A[2K[2m[WebServer] [22m [33m[1m⚠[22m[39m Warning: Found multiple lockfiles. Selecting /Users/aebrahmramos/package-lock.json.
+[2m[WebServer] [22m   Consider removing the lockfiles at:
+[2m[WebServer] [22m   * /Users/aebrahmramos/Documents/Repositories/CSSECDV-CaseStudy/package-lock.json
+[2m[WebServer] [22m   * /Users/aebrahmramos/Documents/Repositories/pnpm-lock.yaml
+[2m[WebServer] [22m
+
+
+Running 48 tests using 5 workers
+
+[1A[2K[1/48] [firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+[1A[2K[2/48] [chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Seeding test users...
+
+[1A[2K[3/48] [chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+[1A[2K[4/48] [chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+Seeding test users...
+
+[1A[2K[5/48] [chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Seeding test users...
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+Seeding test users...
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+Seeding test users...
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+[dotenv@17.2.3] injecting env (7) from .env.local -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Connected to database
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+Connected to database
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+Connected to database
+
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Connected to database
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+Connected to database
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+User test_moderator already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+User test_moderator already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+User test_moderator already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Updated user test_moderator
+
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+User test_moderator already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+User test_user already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+User test_moderator already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+Updated user test_moderator
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+Updated user test_moderator
+
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Updated user test_moderator
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+User test_user already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+User test_user already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Updated user test_user
+Test users seeded successfully
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+Updated user test_moderator
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Disconnected from database
+
+
+[1A[2K✓ Test users seeded successfully
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+User test_user already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+User test_user already exists
+
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:161:5 › RBAC - Regular User Access › user cannot access moderator dashboard
+Updated user test_user
+
+
+[1A[2KTest users seeded successfully
+
+
+[1A[2KDisconnected from database
+
+
+[1A[2K✓ Test users seeded successfully
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role
+Updated user test_user
+Test users seeded successfully
+
+
+[1A[2KDisconnected from database
+
+
+[1A[2K✓ Test users seeded successfully
+
+[1A[2K[firefox] › tests/e2e/rbac-flows.spec.js:71:5 › RBAC - Admin Access › admin can access admin dashboard
+Updated user test_user
+Test users seeded successfully
+
+
+[1A[2KDisconnected from database
+
+
+[1A[2K✓ Test users seeded successfully
+
+[1A[2K[chromium] › tests/e2e/rbac-flows.spec.js:118:5 › RBAC - Moderator Access › moderator can access moderator dashboard
+Updated user test_user
+Test users seeded successfully
+
+
+[1A[2KDisconnected from database
+
+
+[1A[2K✓ Test users seeded successfully
+
+[1A[2K[6/48] [firefox] › tests/e2e/rbac-flows.spec.js:85:5 › RBAC - Admin Access › admin can access admin page
+[1A[2K[7/48] [chromium] › tests/e2e/rbac-flows.spec.js:85:5 › RBAC - Admin Access › admin can access admin page
+[1A[2K[8/48] [chromium] › tests/e2e/rbac-flows.spec.js:125:5 › RBAC - Moderator Access › moderator cannot access admin dashboard
+[1A[2K[9/48] [chromium] › tests/e2e/rbac-flows.spec.js:171:5 › RBAC - Regular User Access › user cannot see admin or moderator links
+[1A[2K  1) [chromium] › tests/e2e/rbac-flows.spec.js:197:5 › RBAC - API Protection › user cannot change another user's role 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m403[39m
+    Received: [31m401[39m
+
+      206 |
+      207 |         // Should be 403 (forbidden) since user is authenticated but lacks permission
+    > 208 |         expect(response.status()).toBe(403);
+          |                                   ^
+      209 |     });
+      210 |
+      211 |     test('moderator cannot change user to admin role', async ({ page }) => {
+        at /Users/aebrahmramos/Documents/Repositories/CSSECDV-CaseStudy/tests/e2e/rbac-flows.spec.js:208:35
+
+    Error Context: test-results/rbac-flows-RBAC---API-Prot-bf370--change-another-user-s-role-chromium/error-context.md
+
+

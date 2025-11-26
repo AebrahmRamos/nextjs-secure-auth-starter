@@ -125,7 +125,7 @@ export async function POST(request) {
     );
 
     const refreshToken = jwt.sign(
-      { id: user._id },
+      { id: user._id, jti: Date.now() + Math.random() }, // Add unique identifier
       process.env.REFRESH_SECRET,
       { expiresIn: "7d" }
     );
@@ -155,7 +155,7 @@ export async function POST(request) {
       value: accessToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/",
       maxAge: 60 * 15,
     });
@@ -165,7 +165,7 @@ export async function POST(request) {
       value: refreshToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
       path: "/api/auth/refresh",
       maxAge: 60 * 60 * 24 * 7,
     });

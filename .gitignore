@@ -36,10 +36,6 @@ yarn-error.log*
 # database backups
 /db-backups/
 /db-backup/
-# Allow team backup
-!team-database-backup.tar.gz
-# Allow one team backup file
-!/team-database-backup.tar.gz
 
 # vercel
 .vercel

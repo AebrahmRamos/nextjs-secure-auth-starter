@@ -24,10 +24,10 @@ function isValidObjectId(id) {
  */
 export async function GET(request, { params }) {
   const clientIP = getClientIP(request);
-  
+
   try {
     await connectToDatabase();
-    
+
     const { id } = await params;
 
     // Validate ObjectId
@@ -64,7 +64,7 @@ export async function GET(request, { params }) {
   } catch (error) {
     console.error('Error fetching forum:', error);
     return NextResponse.json(
-      { 
+      {
         success: false,
         error: "Failed to fetch forum",
         details: process.env.NODE_ENV === 'development' ? error.message : undefined
@@ -81,10 +81,10 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   const clientIP = getClientIP(request);
   const userAgent = request.headers.get('user-agent') || 'unknown';
-  
+
   try {
     await connectToDatabase();
-    
+
     // Check authentication
     const user = await getUserFromCookie();
     if (!user) {
@@ -104,25 +104,24 @@ export async function PUT(request, { params }) {
       );
     }
 
+    const { title, description } = await request.json();
+
     // Find existing forum
-    const existingForum = await Forum.findById(id);
+    const existingForum = await Forum.findById(id).populate('createdBy');
     if (!existingForum) {
-      return NextResponse.json(
-        { success: false, error: "Forum not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Forum not found' }, { status: 404 });
     }
 
-    // Check if user is the creator or admin
-    if (existingForum.createdBy._id.toString() !== user.id.toString() && user.role !== 'admin') {
-      console.log((existingForum.createdBy._id.toString(), user.id.toString()));
+    // Use RBAC system for authorization
+    const { canEditResource } = await import('@/lib/rbac.js');
+    const { PERMISSIONS } = await import('@/config/permissions.js');
+
+    if (!canEditResource(user, existingForum, PERMISSIONS.EDIT_OWN_FORUM, PERMISSIONS.EDIT_ANY_FORUM)) {
       return NextResponse.json(
-        { success: false, error: "Unauthorized: You can only edit your own forums" },
+        { success: false, error: 'Forbidden: You do not have permission to edit this forum' },
         { status: 403 }
       );
     }
-
-    const { title, description } = await request.json();
 
     // Validate required fields
     if (!title || !description) {
@@ -155,7 +154,7 @@ export async function PUT(request, { params }) {
         description: description.trim(),
         updatedAt: new Date()
       },
-      { 
+      {
         new: true, // Return updated document
         runValidators: true // Run schema validation
       }
@@ -169,12 +168,12 @@ export async function PUT(request, { params }) {
 
   } catch (error) {
     console.error('Error updating forum:', error);
-    
+
     // Handle validation errors
     if (error.name === 'ValidationError') {
       const validationErrors = Object.values(error.errors).map(err => err.message);
       return NextResponse.json(
-        { 
+        {
           success: false,
           error: "Validation failed",
           details: validationErrors
@@ -184,7 +183,7 @@ export async function PUT(request, { params }) {
     }
 
     return NextResponse.json(
-      { 
+      {
         success: false,
         error: "Failed to update forum",
         details: process.env.NODE_ENV === 'development' ? error.message : undefined
@@ -240,12 +239,16 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    const isAdmin = user.role === "admin";
-    const isModerator = user.role === "moderator";
-    const isOwner = existingForum.createdBy.toString() === user.id;
+    // Use RBAC system for authorization
+    const { canDeleteResource } = await import('@/lib/rbac.js');
+    const { PERMISSIONS } = await import('@/config/permissions.js');
 
-    // Allow admins, moderators, or the forum creator
-    if (!isAdmin && !isModerator && !isOwner) {
+    if (!canDeleteResource(
+      user,
+      existingForum,
+      PERMISSIONS.DELETE_OWN_FORUM,
+      PERMISSIONS.DELETE_ANY_FORUM
+    )) {
       await SecurityLog.logEvent({
         eventType: "FORUM_DELETE_UNAUTHORIZED",
         username: user.username,
@@ -258,8 +261,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Unauthorized: Only admins, moderators, or the forum owner can delete",
+          error: "Unauthorized: You do not have permission to delete this forum",
         },
         { status: 403 }
       );

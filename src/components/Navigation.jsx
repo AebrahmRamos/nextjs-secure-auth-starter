@@ -1,14 +1,17 @@
 "use client";
 
+import { useAuth } from "@/components/providers/AuthProvider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Dropdown, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { usePermission } from "@/hooks/usePermission";
+import { ROLES } from "@/config/roles";
 
 export default function Navigation() {
   const router = useRouter();
   const { user, loading, loggingOut, logout } = useAuth();
+  const { hasRole, hasMinimumRole } = usePermission();
 
   if (loading) {
     return (
@@ -39,7 +42,7 @@ export default function Navigation() {
           </Button>
         )}
 
-        {user?.role === "admin" && (
+        {hasRole(ROLES.ADMIN) && (
           <Button
             variant="link"
             onClick={() => router.push("/admin")}
@@ -49,7 +52,7 @@ export default function Navigation() {
           </Button>
         )}
 
-        {user?.role === "moderator" && (
+        {hasMinimumRole(ROLES.MODERATOR) && (
           <Button
             variant="link"
             onClick={() => router.push("/moderator")}
@@ -72,7 +75,7 @@ export default function Navigation() {
             <DropdownMenuItem onClick={() => router.push("/change-password")}>
               Change Password
             </DropdownMenuItem>
-            <DropdownMenuItem 
+            <DropdownMenuItem
               onClick={logout}
               className="text-red-600 hover:bg-red-50"
             >

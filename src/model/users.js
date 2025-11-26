@@ -213,9 +213,9 @@ userSchema.method("incLoginAttempts", async function () {
   let updateData = {};
 
   // If lock has expired, reset attempts
-  if (this.lockUntil && this.lockUntil < now) {
+  if (this.lockoutUntil && this.lockoutUntil < now) {
     updateData.loginAttempts = 1;
-    updateData.$unset = { lockUntil: 1 };
+    updateData.$unset = { lockoutUntil: 1 };
     updateData.isLocked = false;
   } else {
     updateData.$inc = { loginAttempts: 1 };
@@ -225,7 +225,7 @@ userSchema.method("incLoginAttempts", async function () {
   const currentAttempts = this.loginAttempts + 1;
   if (currentAttempts >= MAX_LOGIN_ATTEMPTS) {
     const lockMinutes = Math.min(MAX_LOCK_MINUTES, Math.pow(2, currentAttempts - MAX_LOGIN_ATTEMPTS));
-    updateData.lockUntil = new Date(now + lockMinutes * 60 * 1000);
+    updateData.lockoutUntil = new Date(now + lockMinutes * 60 * 1000);
     updateData.isLocked = true;
   }
 
@@ -238,7 +238,7 @@ userSchema.method("incLoginAttempts", async function () {
   } else if (updateData.loginAttempts !== undefined) {
     this.loginAttempts = updateData.loginAttempts;
   }
-  if (updateData.lockUntil) this.lockUntil = updateData.lockUntil;
+  if (updateData.lockoutUntil) this.lockoutUntil = updateData.lockoutUntil;
   if (updateData.isLocked !== undefined) this.isLocked = updateData.isLocked;
 });
 

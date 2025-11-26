@@ -64,11 +64,12 @@ export async function POST(request) {
     );
 
     const refreshToken = jwt.sign(
-      { id: newUser._id },
+      { id: newUser._id, jti: Date.now() + Math.random() }, // Add unique identifier
       process.env.REFRESH_SECRET,
       { expiresIn: "7d" }
     );
 
+    await RefreshToken.deleteMany({ user: newUser._id }); // Clear any existing tokens
     await RefreshToken.create({
       user: newUser._id,
       token: refreshToken,

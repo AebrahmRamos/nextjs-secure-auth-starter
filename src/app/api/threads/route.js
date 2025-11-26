@@ -143,11 +143,23 @@ export async function DELETE(request) {
     const objectId = toObjectId(id);
     const thread = await db.collection('threads').findOne({ _id: objectId });
 
-    const isAdmin = user.role === 'admin';
-    const isModerator = user.role === 'moderator';
-    const isOwner = thread?.createdBy === user.id;
+    if (!thread) {
+      return NextResponse.json({ error: 'Thread not found' }, { status: 404 });
+    }
 
-    if (!thread || (!isOwner && !isAdmin && !isModerator)) {
+    // Use RBAC system for authorization
+    const { canDeleteResource } = await import('@/lib/rbac.js');
+    const { PERMISSIONS } = await import('@/config/permissions.js');
+
+    // Create thread object with createdBy field for RBAC check
+    const threadWithOwner = { ...thread, createdBy: thread.createdBy };
+
+    if (!canDeleteResource(
+      user,
+      threadWithOwner,
+      PERMISSIONS.DELETE_OWN_THREAD,
+      PERMISSIONS.DELETE_ANY_THREAD
+    )) {
       await SecurityLog.logEvent({
         eventType: 'THREAD_FORBIDDEN_ACCESS',
         userId: user.id,
